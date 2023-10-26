@@ -1,12 +1,19 @@
-import React from "react";
+import React, { Suspense, useState } from "react";
 import "./App.css";
 const Component = React.lazy(() => import("./Component"));
 
 function App() {
+  const [showComponent, setShowComponent] = useState(false);
+
   return (
     <div>
-      <h1>Hello World</h1>
-      {Math.random() > 0.5 && <Component />}
+      <Suspense fallback={<p>Parent loading...</p>}>
+        <h1 onClick={() => setShowComponent(!showComponent)}>Hello World</h1>
+        {showComponent && <Component />}
+        <Suspense fallback={<div>Loading...</div>}>
+          <p>This is something</p>
+        </Suspense>
+      </Suspense>
     </div>
   );
 }
